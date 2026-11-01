@@ -45,7 +45,6 @@ scene.add(dirLight);
 const trackLength = 100;
 const obstacles = [];
 const coins = [];
-const blocks = [];
 
 // Create a stylish cyberpunk road
 const roadGeometry = new THREE.PlaneGeometry(10, trackLength);
@@ -71,15 +70,15 @@ let playerModel = null;
 let obstacleTemplate = null;
 let coinTemplate = null;
 
-// Fallback geometries incase models are loading/missing
+// Fallback geometries in case models are loading/missing
 const fallbackPlayerGeo = new THREE.BoxGeometry(0.8, 1.5, 0.8);
 const fallbackMat = new THREE.MeshStandardMaterial({ color: 0x00ffcc });
 let player = new THREE.Mesh(fallbackPlayerGeo, fallbackMat);
 player.position.set(CONFIG.lanes[currentLaneIndex], 0.75, 0);
 scene.add(player);
 
-// Load GLB models from public/models/
-loader.load('./models/player.glb', (gltf) => {
+// Load GLB models using Vite's relative asset URL bundling
+loader.load(new URL('./models/player.glb', import.meta.url).href, (gltf) => {
     scene.remove(player);
     playerModel = gltf.scene;
     playerModel.scale.set(0.8, 0.8, 0.8);
@@ -90,11 +89,11 @@ loader.load('./models/player.glb', (gltf) => {
     console.log('Using fallback player shape.');
 });
 
-loader.load('./models/obstacle.glb', (gltf) => {
+loader.load(new URL('./models/obstacle.glb', import.meta.url).href, (gltf) => {
     obstacleTemplate = gltf.scene;
 });
 
-loader.load('./models/coin.glb', (gltf) => {
+loader.load(new URL('./models/coin.glb', import.meta.url).href, (gltf) => {
     coinTemplate = gltf.scene;
 });
 
